@@ -18,39 +18,6 @@ def index():
 
 @socketio.on('stream')
 def handle_stream(image):
-    # print("Received frame:", len(frame))
-    # print("Frame type:", type(frame))
-    
-    # Decode base64 string to bytes-like object
-    # frame_bytes = base64.b64decode(frame.encode('utf-8'))
-    # save the frame to a file
-    # with open('framew.jpg', 'wb') as f:
-    #     f.write(frame_bytes)
-        
-        
-
-    # # Convert bytes to numpy array
-    # nparr = np.frombuffer(frame_bytes, np.uint8)
-
-    # # Check the size of the decoded array
-    # print("Decoded frame size:", len(nparr))
-
-    # # Decode image using OpenCV
-    # img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-
-    # if img is None:
-    #     print("Error decoding image from frame")
-    #     return
-
-    # # Process the image (e.g., convert to grayscale)
-    # gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    # # Convert the processed image back to base64 string
-    # _, encoded_image = cv2.imencode('.jpg', gray)
-    # processed_frame = base64.b64encode(encoded_image).decode('utf-8')
-
-    # # Broadcast the processed frame to all connected clients
-    # emit('stream', processed_frame, broadcast=True)
     sbuf = io.StringIO()
     sbuf.write(image)
 

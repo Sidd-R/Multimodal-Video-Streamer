@@ -10,15 +10,6 @@
     <video id="video" width="640" height="480" autoplay></video>
     <button id="startButton">Start Streaming</button>
     <button id="stopButton">Stop Streaming</button>
-
-    <!-- <video id="video1" width="640" height="480" autoplay></video>
-    <canvas
-      id="canvas1"
-      width="640"
-      height="480"
-      style="display: none"
-    ></canvas> -->
-
     <div class="row">
         <div class="col-lg-8  offset-lg-2">
             <h3 class="mt-5">SOCKETIO IMAGES</h3>
@@ -32,22 +23,6 @@
     ></script>
     <script>
       var socket = io();
-
-      // socket.on('stream', function(frame) {
-      //     // Decode base64 string to image
-      //     var image = new Image();
-      //     image.src = 'data:image/png;base64,' + frame;
-
-      //     // Draw the image onto the canvas
-      //     var canvas = document.getElementById('canvas1');
-      //     var ctx = canvas.getContext('2d');
-      //     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-      //     // Display the processed video frames
-      //     var processedVideo = document.getElementById('video1');
-      //     processedVideo.src = canvas.toDataURL('image/png');
-      // });
-
       socket.on('stream', function (image) {
         console.log('got response back!');
         const image_id = document.getElementById('imagebox');
