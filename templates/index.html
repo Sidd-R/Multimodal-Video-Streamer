@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real-time Video Streaming</title>
+  </head>
+  <body>
+    <h1>Real-time Video Streaming</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="startButton">Start Streaming</button>
+    <button id="stopButton">Stop Streaming</button>
+
+    <!-- <video id="video1" width="640" height="480" autoplay></video>
+    <canvas
+      id="canvas1"
+      width="640"
+      height="480"
+      style="display: none"
+    ></canvas> -->
+
+    <div class="row">
+        <div class="col-lg-8  offset-lg-2">
+            <h3 class="mt-5">SOCKETIO IMAGES</h3>
+            <img id="imagebox" src="" width="320" height="240">
+        </div>
+    </div>
+
+    <script
+      type="text/javascript"
+      src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.min.js"
+    ></script>
+    <script>
+      var socket = io();
+
+      // socket.on('stream', function(frame) {
+      //     // Decode base64 string to image
+      //     var image = new Image();
+      //     image.src = 'data:image/png;base64,' + frame;
+
+      //     // Draw the image onto the canvas
+      //     var canvas = document.getElementById('canvas1');
+      //     var ctx = canvas.getContext('2d');
+      //     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+      //     // Display the processed video frames
+      //     var processedVideo = document.getElementById('video1');
+      //     processedVideo.src = canvas.toDataURL('image/png');
+      // });
+
+      socket.on('stream', function (image) {
+        console.log('got response back!');
+        const image_id = document.getElementById('imagebox');
+        image_id.src = image;
+      });
+
+      // Get access to the user's webcam or device camera
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then(function (stream) {
+          var video = document.getElementById('video');
+          video.srcObject = stream;
+        })
+        .catch(function (err) {
+          console.error('Error accessing user media:', err);
+        });
+
+      document
+        .getElementById('startButton')
+        .addEventListener('click', function () {
+          var video = document.getElementById('video');
+          var canvas = document.createElement('canvas');
+          var context = canvas.getContext('2d');
+
+          // Capture video frames and send them to the server
+          setInterval(function () {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            var frame = canvas.toDataURL('image/png');
+            frame = frame.replace('data:' + 'image/png' + ';base64,', '');
+            socket.emit('stream', frame);
+          }, 1000/30); // Adjust the interval as needed
+        });
+
+      document
+        .getElementById('stopButton')
+        .addEventListener('click', function () {
+          // Stop streaming
+          // You can add any necessary cleanup code here
+          socket.disconnect();
+        });
+    </script>
+  </body>
+</html>
